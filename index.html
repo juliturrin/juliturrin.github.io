@@ -4,22 +4,82 @@
   <meta charset="UTF-8">
   <title>Mis Videos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Tipografía estilo “ritual” similar a Sleep Token -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: sans-serif; background:#111; color:#fff; margin:0; padding:2rem; text-align:center; }
-    h1 { margin: 0 0 1rem; }
-    .video { margin:2rem auto; max-width:900px; }
-    iframe { width:100%; height:506px; border:none; }
+    :root{
+      --bg:#0a0a0b;
+      --fg:#f7f7f7;
+      --muted:#bfbfbf;
+      --accent:#d32f2f;      /* rojo pasional */
+      --card:#141419;        /* detalle blanco suave en decoraciones */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; padding:24px;
+      background:var(--bg); color:var(--fg);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      display:flex; flex-direction:column; align-items:center;
+      text-align:center;
+    }
+    h1{ margin:0 0 8px; letter-spacing:.5px; }
+    hr{ width:min(92vw,560px); border:0; border-top:1px solid rgba(255,255,255,.08); }
+
+    .video-card{
+      width:min(92vw,560px);               /* 100% móvil, tope escritorio */
+      background:var(--card);
+      border-radius:14px;
+      box-shadow:0 10px 30px rgba(211,47,47,.18); /* sombra suave rojiza */
+      padding:16px 16px 20px;
+      margin:18px auto;
+    }
+    .video-title{
+      font-family:Cinzel,serif;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      font-size:20px;
+      margin:0 0 12px;
+    }
+    .video-title::after{
+      content:"";
+      display:block;
+      width:68px; height:2px; margin:10px auto 0;
+      background:linear-gradient(90deg,var(--accent),#ffffff);
+      opacity:.85; border-radius:2px;
+    }
+    /* Reproductor vertical 9:16, optimizado móvil */
+    .ratio{
+      position:relative; width:100%;
+      aspect-ratio:9/16;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:10px; overflow:hidden; background:#000;
+    }
+    .ratio iframe{
+      position:absolute; inset:0; width:100%; height:100%; border:0;
+    }
+
+    footer{ margin-top:auto; font-size:12px; color:var(--muted); }
+    a{ color:var(--accent); text-decoration:none }
+    a:hover{ text-decoration:underline }
   </style>
 </head>
 <body>
   <h1>Bienvenidos a mis obras</h1>
+  <hr>
 
-  <div class="video">
-    <h2>Set Room Sleep Token</h2>
-    <iframe
-      src="https://drive.google.com/file/d/1jApf5CZ3gImn-edMkuvdZEzwB9Zh1I0c/preview"
-      allow="autoplay">
-    </iframe>
-  </div>
+  <section class="video-card">
+    <h2 class="video-title">Set Room Sleep Token</h2>
+    <div class="ratio">
+      <!-- Sin autoplay (tu elección: 6A) -->
+      <iframe src="https://drive.google.com/file/d/1jApf5CZ3gImn-edMkuvdZEzwB9Zh1I0c/preview" allow="autoplay"></iframe>
+    </div>
+    <!-- 9A: sin texto debajo por ahora -->
+  </section>
+
+  <footer>© <span id="y"></span> Axel — Sitio simple para ver mis videos.</footer>
+  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
 </body>
 </html>
