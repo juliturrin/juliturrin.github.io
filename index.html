@@ -4,79 +4,95 @@
   <meta charset="UTF-8">
   <title>Mis Videos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Tipografía estilo “ritual” similar a Sleep Token -->
+  <!-- Tipografías -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0a0a0b;
-      --fg:#f7f7f7;
-      --muted:#bfbfbf;
-      --accent:#d32f2f;      /* rojo pasional */
-      --card:#141419;        /* detalle blanco suave en decoraciones */
+      --bg:#0a0a0b; --fg:#f7f7f7; --muted:#bfbfbf;
+      --accent:#d32f2f; --card:#141419;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; padding:24px;
-      background:var(--bg); color:var(--fg);
+      margin:0; padding:24px; background:var(--bg); color:var(--fg);
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
-      display:flex; flex-direction:column; align-items:center;
-      text-align:center;
+      display:flex; flex-direction:column; align-items:center; text-align:center;
     }
-    h1{ margin:0 0 8px; letter-spacing:.5px; }
-    hr{ width:min(92vw,560px); border:0; border-top:1px solid rgba(255,255,255,.08); }
 
+    /* ===== Encabezado con monograma ===== */
+    .brand{display:flex; flex-direction:column; align-items:center; gap:8px; margin-bottom:12px}
+    .logo{
+      width:84px; height:84px;
+      filter: drop-shadow(0 6px 16px rgba(211,47,47,.25));
+    }
+    .tagline{font-size:12px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase}
+
+    /* ===== Tarjeta de video ===== */
     .video-card{
-      width:min(92vw,560px);               /* 100% móvil, tope escritorio */
+      width:min(92vw,560px);
       background:var(--card);
       border-radius:14px;
-      box-shadow:0 10px 30px rgba(211,47,47,.18); /* sombra suave rojiza */
-      padding:16px 16px 20px;
-      margin:18px auto;
+      box-shadow:0 10px 30px rgba(211,47,47,.18);
+      padding:16px 16px 20px; margin:18px auto;
     }
     .video-title{
-      font-family:Cinzel,serif;
-      letter-spacing:1px;
-      text-transform:uppercase;
-      font-size:20px;
-      margin:0 0 12px;
+      font-family:Cinzel,serif; letter-spacing:1px; text-transform:uppercase;
+      font-size:20px; margin:0 0 12px;
     }
     .video-title::after{
-      content:"";
-      display:block;
-      width:68px; height:2px; margin:10px auto 0;
-      background:linear-gradient(90deg,var(--accent),#ffffff);
-      opacity:.85; border-radius:2px;
+      content:""; display:block; width:68px; height:2px; margin:10px auto 0;
+      background:linear-gradient(90deg,var(--accent),#ffffff); opacity:.85; border-radius:2px;
     }
-    /* Reproductor vertical 9:16, optimizado móvil */
-    .ratio{
-      position:relative; width:100%;
-      aspect-ratio:9/16;
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:10px; overflow:hidden; background:#000;
-    }
-    .ratio iframe{
-      position:absolute; inset:0; width:100%; height:100%; border:0;
-    }
+    /* Reproductor vertical (9:16) optimizado móvil */
+    .ratio{position:relative; width:100%; aspect-ratio:9/16;
+      border:1px solid rgba(255,255,255,.08); border-radius:10px; overflow:hidden; background:#000;}
+    .ratio iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
 
     footer{ margin-top:auto; font-size:12px; color:var(--muted); }
-    a{ color:var(--accent); text-decoration:none }
-    a:hover{ text-decoration:underline }
+    a{ color:var(--accent); text-decoration:none } a:hover{text-decoration:underline}
+
+    /* Accesibilidad: texto solo para lectores */
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
   </style>
 </head>
 <body>
-  <h1>Bienvenidos a mis obras</h1>
-  <hr>
+  <!-- Encabezado con monograma AJT -->
+  <header class="brand" aria-label="Encabezado del sitio">
+    <svg class="logo" viewBox="0 0 100 100" role="img" aria-labelledby="logoTitle logoDesc">
+      <title id="logoTitle">Monograma AJT</title>
+      <desc id="logoDesc">Círculo rojo con letras A J T en blanco.</desc>
+      <!-- Disco exterior -->
+      <circle cx="50" cy="50" r="46" fill="none" stroke="white" stroke-opacity=".8" stroke-width="2"/>
+      <!-- Anillo acento -->
+      <circle cx="50" cy="50" r="40" fill="none" stroke="url(#g)" stroke-width="6" stroke-linecap="round"
+              stroke-dasharray="180 320" transform="rotate(-20 50 50)"/>
+      <!-- Letras -->
+      <g fill="white">
+        <!-- A -->
+        <path d="M34 68 L45 32 L56 68 L51 68 L48 59 L42 59 L39 68 Z M44.5 53 H47.5 L46 48 Z"/>
+        <!-- J -->
+        <path d="M59 34 H66 V59 c0 7-5 12-12 12 h-6 v-6 h6 c3 0 6-3 6-6 V34 Z"/>
+        <!-- T -->
+        <path d="M28 34 H72 V40 H58 V68 H50 V40 H42 V34 Z"/>
+      </g>
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#d32f2f"/>
+          <stop offset="100%" stop-color="#ffffff"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <span class="sr-only">Axel Julian Turrin</span>
+    <div class="tagline">Obras en video</div>
+  </header>
 
   <section class="video-card">
     <h2 class="video-title">Set Room Sleep Token</h2>
     <div class="ratio">
-      <!-- Sin autoplay (tu elección: 6A) -->
       <iframe src="https://drive.google.com/file/d/1jApf5CZ3gImn-edMkuvdZEzwB9Zh1I0c/preview" allow="autoplay"></iframe>
     </div>
-    <!-- 9A: sin texto debajo por ahora -->
   </section>
 
   <footer>© <span id="y"></span> Axel — Sitio simple para ver mis videos.</footer>
