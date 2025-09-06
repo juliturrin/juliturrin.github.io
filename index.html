@@ -9,9 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --accent:#ff1744; --bg:#0a0a0b; --fg:#f7f7f7; --muted:#bfbfbf; --card:#141419;
-    }
+    :root{ --accent:#ff1744; --bg:#0a0a0b; --fg:#f7f7f7; --muted:#bfbfbf; --card:#141419; }
     *{ box-sizing:border-box } html,body{ height:100% }
     body{
       margin:0; padding:20px; background:var(--bg); color:var(--fg);
@@ -19,7 +17,7 @@
       display:flex; flex-direction:column; align-items:center; text-align:center;
     }
 
-    /* Encabezado oculto por ahora */
+    /* Encabezado oculto (por ahora) */
     .brand{ display:none }
 
     /* Tarjeta 100% móvil con sombra */
@@ -43,15 +41,12 @@
       border:1px solid rgba(255,255,255,.08);
       border-radius:12px; overflow:hidden; background:#000;
     }
-
-    /* Iframe ocupa todo (se crea al hacer clic) */
     .ratio iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
 
-    /* ===== Portada antes de reproducir ===== */
+    /* Portada clickeable (usa portada.jpg en la raíz) */
     .video-cover{
       position:absolute; inset:0; border:0; padding:0; cursor:pointer;
-      background:#000 center/cover no-repeat;
-      color:transparent;
+      background:#000 url('portada.jpg?v=3') center/cover no-repeat; color:transparent;
     }
     .video-cover::after{
       content:""; position:absolute; inset:0;
@@ -64,9 +59,9 @@
       box-shadow:0 10px 24px rgba(0,0,0,.45), 0 0 0 6px rgba(255,23,68,.25);
     }
     .play-triangle{
-      position:absolute; left:50%; top:50%; transform:translate(-38%,-50%); pointer-events:none;
+      position:absolute; left:50%; top:50%; transform:translate(-38%,-50%);
       width:0; height:0; border-left:26px solid #fff; border-top:16px solid transparent; border-bottom:16px solid transparent;
-      filter:drop-shadow(0 2px 6px rgba(0,0,0,.35));
+      filter:drop-shadow(0 2px 6px rgba(0,0,0,.35)); pointer-events:none;
     }
 
     footer{ margin-top:auto; font-size:12px; color:var(--muted) }
@@ -76,11 +71,9 @@
 <body>
   <section class="video-card">
     <h2 class="video-title">Set Room Sleep Token</h2>
-
     <div class="ratio" id="player1">
-      <!-- Portada (se reemplaza por el reproductor al tocar) -->
-      <button class="video-cover" id="cover1" aria-label="Reproducir video"
-              style="background-image:url('portada.jpg?v=2')">
+      <!-- Portada: se reemplaza por el reproductor al tocar -->
+      <button class="video-cover" id="cover1" aria-label="Reproducir video">
         <span class="play-triangle" aria-hidden="true"></span>
       </button>
     </div>
@@ -89,16 +82,18 @@
   <footer>© <span id="y"></span> Axel — Sitio simple para ver mis videos.</footer>
 
   <script>
-    // Año dinámico
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Elimina cualquier iframe viejo si existiera
-    const player = document.getElementById('player1');
-    const prev = player.querySelector('iframe'); if (prev) prev.remove();
+    // Nuevo enlace de Drive (usar /preview)
+    const driveSrc = "https://drive.google.com/file/d/1anZBdJ6BfbiOCIA5OqeXTv96vidrYSCV/preview";
 
-    // Al tocar la portada, cargamos el reproductor de Drive
-    const driveSrc = "https://drive.google.com/file/d/1jApf5CZ3gImn-edMkuvdZEzwB9Zh1I0c/preview";
     const cover = document.getElementById('cover1');
+    const player = document.getElementById('player1');
+
+    // Limpia iframes previos, si hubiera
+    const old = player.querySelector('iframe'); if (old) old.remove();
+
+    // Cargar reproductor al tocar la portada
     cover.addEventListener('click', () => {
       const iframe = document.createElement('iframe');
       iframe.src = driveSrc;
