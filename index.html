@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Mis Videos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Tipografías -->
+  <meta name="theme-color" content="#0a0a0b" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
@@ -16,10 +16,6 @@
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
       display:flex; flex-direction:column; align-items:center; text-align:center;
     }
-
-    /* Encabezado oculto (por ahora) */
-    .brand{ display:none }
-
     /* Tarjeta 100% móvil con sombra */
     .video-card{
       width:100%; max-width:820px; background:var(--card);
@@ -35,18 +31,20 @@
       background:linear-gradient(90deg,var(--accent),#ffffff); opacity:.95; border-radius:2px;
     }
 
-    /* Contenedor 9:16 */
+    /* Contenedor 9:16 (vertical) */
     .ratio{
       position:relative; width:100%; aspect-ratio:9/16;
       border:1px solid rgba(255,255,255,.08);
       border-radius:12px; overflow:hidden; background:#000;
     }
-    .ratio iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+    .ratio iframe{
+      position:absolute; inset:0; width:100%; height:100%; border:0;
+    }
 
-    /* Portada clickeable (usa portada.jpg en la raíz) */
+    /* Portada antes de reproducir */
     .video-cover{
       position:absolute; inset:0; border:0; padding:0; cursor:pointer;
-      background:#000 url('portada.jpg?v=3') center/cover no-repeat; color:transparent;
+      background:#000 url('portada.jpg?v=4') center/cover no-repeat; color:transparent;
     }
     .video-cover::after{
       content:""; position:absolute; inset:0;
@@ -59,9 +57,9 @@
       box-shadow:0 10px 24px rgba(0,0,0,.45), 0 0 0 6px rgba(255,23,68,.25);
     }
     .play-triangle{
-      position:absolute; left:50%; top:50%; transform:translate(-38%,-50%);
+      position:absolute; left:50%; top:50%; transform:translate(-38%,-50%); pointer-events:none;
       width:0; height:0; border-left:26px solid #fff; border-top:16px solid transparent; border-bottom:16px solid transparent;
-      filter:drop-shadow(0 2px 6px rgba(0,0,0,.35)); pointer-events:none;
+      filter:drop-shadow(0 2px 6px rgba(0,0,0,.35));
     }
 
     footer{ margin-top:auto; font-size:12px; color:var(--muted) }
@@ -71,8 +69,9 @@
 <body>
   <section class="video-card">
     <h2 class="video-title">Set Room Sleep Token</h2>
+
     <div class="ratio" id="player1">
-      <!-- Portada: se reemplaza por el reproductor al tocar -->
+      <!-- Portada: al tocar se carga el reproductor -->
       <button class="video-cover" id="cover1" aria-label="Reproducir video">
         <span class="play-triangle" aria-hidden="true"></span>
       </button>
@@ -84,21 +83,23 @@
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Nuevo enlace de Drive (usar /preview)
+    // Enlace NUEVO de Drive (usar /preview)
     const driveSrc = "https://drive.google.com/file/d/1anZBdJ6BfbiOCIA5OqeXTv96vidrYSCV/preview";
 
-    const cover = document.getElementById('cover1');
     const player = document.getElementById('player1');
+    const cover  = document.getElementById('cover1');
 
-    // Limpia iframes previos, si hubiera
+    // Asegura que no haya iframes viejos
     const old = player.querySelector('iframe'); if (old) old.remove();
 
-    // Cargar reproductor al tocar la portada
+    // Cargar reproductor cuando el usuario toca la portada (mejor para móvil)
     cover.addEventListener('click', () => {
       const iframe = document.createElement('iframe');
       iframe.src = driveSrc;
-      iframe.allow = "autoplay; fullscreen";
+      iframe.allow = "autoplay; fullscreen; picture-in-picture";
       iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+      iframe.loading = "lazy";
       player.appendChild(iframe);
       cover.remove();
     });
